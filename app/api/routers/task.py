@@ -3,13 +3,14 @@ from typing import Annotated
 from fastapi import APIRouter, status
 from fastapi.params import Depends
 
+from app.api.dependencies import get_task_service
 from app.models.task import TaskORM
 from app.schemas.tasks import TaskCreateSchema, TaskSchema, TaskUpdateSchema
-from app.services.task import TaskNotFound, TaskService
+from app.services.task import TaskNotFoundError, TaskService
 
 router = APIRouter(prefix="/tasks")
 
-TaskServiceDep = Annotated[TaskService, Depends()]
+TaskServiceDep = Annotated[TaskService, Depends(get_task_service)]
 
 
 @router.get("")
@@ -31,7 +32,7 @@ def update_task(self, task_id: str, task_update: TaskUpdateSchema) -> TaskSchema
 
     # Явная проверка на None убирает ошибку "union-attr" у Mypy
     if task_for_update is None:
-        raise TaskNotFound(f"Задача с {task_id} не найдена")
+        raise TaskNotFoundError(f"Задача с {task_id} не найдена")
 
     if task_update.title:
         task_for_update.title = task_update.title
@@ -46,7 +47,7 @@ def update_task(self, task_id: str, task_update: TaskUpdateSchema) -> TaskSchema
 def delete_task(self, task_id: str) -> None:
     task_for_delete: TaskORM | None = self.task_repository.get_by_id(task_id=task_id)
     if task_for_delete is None:
-        raise TaskNotFound(f"Задача с {task_id} не найдена")
+        raise TaskNotFoundError(f"Задача с {task_id} не найдена")
 
     self.task_repository.delete(task_for_delete)
     self.db.commit()

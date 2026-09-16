@@ -5,7 +5,7 @@ from app.repositories.task import TaskRepository
 from app.schemas.tasks import TaskCreateSchema, TaskSchema, TaskUpdateSchema
 
 
-class TaskNotFound(Exception):
+class TaskNotFoundError(Exception):
     """Задача не найдена"""
 
 
@@ -29,7 +29,7 @@ class TaskService:
         )
 
         if task_for_update is None:
-            raise TaskNotFound(f"Задача с id={task_id} не найдена")
+            raise TaskNotFoundError(f"Задача с id={task_id} не найдена")
 
         if task_update.title:
             task_for_update.title = task_update.title
@@ -45,7 +45,7 @@ class TaskService:
         )
 
         if task_for_delete is None:
-            raise TaskNotFound(f"Задача с id={task_id} не найдена")
+            raise TaskNotFoundError(f"Задача с id={task_id} не найдена")
 
         self.task_repository.delete(task_for_delete)
         self.db.commit()

@@ -14,6 +14,7 @@ dependencies = [
     "psycopg[binary]>=3.3.5",
     "pydantic>=2.13.5",
     "pydantic-settings>=2.15.0",
+    "pytest>=9.1.1",
     "ruff>=0.16.7",
     "sqlalchemy>=2.0.52",
     "uvicorn>=0.52.4",
@@ -43,3 +44,6 @@ warn_unused_ignores = true
 ignore_missing_imports = true
 # Помогает Mypy корректно распознавать вложенные модули без конфликтов имён
 explicit_package_bases = true
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
