@@ -1,0 +1,45 @@
+[project]
+name = "todo-app-backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.20.0",
+    "asyncpg>=0.31.0",
+    "fastapi>=0.141.1",
+    "mypy>=2.3.1",
+    "pre-commit>=4.6.2",
+    "psycopg2-binary>=2.9.12",
+    "psycopg[binary]>=3.3.5",
+    "pydantic>=2.13.5",
+    "pydantic-settings>=2.15.0",
+    "ruff>=0.16.7",
+    "sqlalchemy>=2.0.52",
+    "uvicorn>=0.52.4",
+]
+
+[tool.ruff]
+# Приводим к единому стандарту Python 3.12
+target-version = "py312"
+line-length = 88
+exclude = ["alembic"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.mypy]
+files = ["app"]
+python_version = "3.12"
+check_untyped_defs = true
+show_error_codes = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+# Помогает Mypy корректно распознавать вложенные модули без конфликтов имён
+explicit_package_bases = true
